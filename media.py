@@ -13,6 +13,14 @@ conn = sqlite3.connect('users.db', check_same_thread=False)
 conn.execute('''CREATE TABLE IF NOT EXISTS users
              (email TEXT PRIMARY KEY, password TEXT)''')
 
+
+#homepage
+@app.route('/')
+def homepage():
+  return  render_template('homepage.html')
+
+
+
 # Register view
 @app.route('/register', methods=['GET', 'POST'])
 def register():
@@ -30,7 +38,7 @@ def register():
         else:
             conn.execute("INSERT INTO users (email, password) VALUES (?, ?)", (email, hashed_password))
             conn.commit()
-            return redirect('/login')
+            return redirect('login.html')
     else:
         return render_template('register.html')
 
@@ -49,39 +57,12 @@ def login():
             hashed_password = row[0]
             if check_password_hash(hashed_password, password):
                 session['email'] = email
-                return redirect('/')
+                return redirect('/media')
         error = "Invalid email or password"
         # return render_template('login.html', error=error)
         return render_template('login.html', error=error)
     else:
         return render_template('login.html')
-
-# Logout view
-@app.route('/logout')
-def logout():
-    session.pop('email', None)
-    return redirect('/login')
-
-# Homepage view (protected by login)
-@app.route('/')
-def home():
-    if 'email' in session:
-        # return "Welcome, " + session['email'] + "!"
-        return render_template('homepage.html')
-    else:
-        return redirect('/login')
-
-
-
-# #register page
-# @app.route('/register')
-# def register():
-#     return render_template('register.html')
-
-# #login page
-# @app.route('/login')
-# def login():
-#     return render_template('login.html')
 
 #about page
 @app.route('/about')
@@ -101,9 +82,6 @@ def contact():
 
 # Replace with your own API key
 YOUTUBE_API_KEY = 'AIzaSyBDnBWssZvy7lZyWbMnK3lY0whJJPoZ-WQ'
-
-# Replace with your own channel ID
-# YOUTUBE_CHANNEL_ID = 'Mejja official'
 
 # Create a function to fetch the video data from the YouTube API
 def get_youtube_videos():
@@ -136,3 +114,5 @@ def media():
 #run the app
 if __name__ == '__main__':
     app.run(debug=True)
+    
+    
