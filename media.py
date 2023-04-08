@@ -16,10 +16,8 @@ conn.execute('''CREATE TABLE IF NOT EXISTS users
 
 #homepage
 @app.route('/')
-def homepage():
-  return  render_template('homepage.html')
-
-
+def home():
+  return  render_template('index.html')
 
 # Register view
 @app.route('/register', methods=['GET', 'POST'])
@@ -68,6 +66,28 @@ def login():
 @app.route('/about')
 def about():
     return render_template('about.html')
+
+#blog page
+
+@app.route('/blog')
+def blog():
+    return render_template('blog.html')
+
+@app.route('/discography')
+def discography():
+    return render_template('/discography.html')
+
+#tour page
+@app.route('/tour')
+def tour():
+    return render_template('tour.html')
+
+
+#band page
+@app.route('/band')
+def band():
+    return render_template('band.html')
+
 
 #contact page
 @app.route('/contact')
